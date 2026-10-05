@@ -150,11 +150,11 @@ footer{border-top:3px solid var(--k);margin:30px -16px -16px;padding:16px;backgr
     <div class="grid" id="grid"></div>
   </section>
 
-  <!-- SOBRE DE... -->
+  <!-- Acerca de... -->
   <section id="s-man">
     <article class="essay">
       <span class="tag r">DOCUMENTO PÚBLICO</span><span class="tag">CC NO COMERCIAL</span>
-      <h1>Sobre polerasdeemoji</h1>
+      <h1>Acerca de polerasdeemoji</h1>
       <div class="meta"><span>Recomendación de lectura!</span><span>Org. sin fines de lucro</span><span>Lectura: 4 min</span></div>
 
       <p>polerasdeemoji nace como una extensión física de ojitosdeemoji. ¡No basta con ver las imágenes! Ya no es suficiente para contener el peso de la información. Archivamos el deseo de tenerlas, el pequeño espasmo que ocurre entre ver y querer; un paso que no ocurre nunca al llevarlas y tenerlas, haciendo que el deseo se vuelva infinito y eterno.</p>
@@ -221,7 +221,7 @@ if (deseo &gt; stock) {
 <!-- BARRA INFERIOR -->
 <nav>
   <button onclick="go('cat')" id="btn-cat" aria-current="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Catálogo</button>
-  <button onclick="go('man')" id="btn-man"><svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h8"/></svg>Sobre de...</button>
+  <button onclick="go('man')" id="btn-man"><svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h8"/></svg>Acerca de...</button>
   <button onclick="go('sim')" id="btn-sim"><svg viewBox="0 0 24 24"><path d="M3 6h18l-2 12H5z"/><path d="M8 6a4 4 0 0 1 8 0"/></svg>Simulacro</button>
   <button onclick="go('nube')" id="btn-nube"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1 0 9z"/></svg>Perfil/Nube</button>
 </nav>
@@ -314,9 +314,9 @@ if (deseo &gt; stock) {
 <script>
 const PRODUCTOS = [
   { id: 1, nombre: 'polerasdeemoji_intro', precio: '$35.000', img: 'poleras/prenda1.webp', desc: 'Introducción a polerasdeemoji...' },
-  { id: 2, nombre: 'Latencia 404', precio: '$49.990', img: 'https://via.placeholder.com/600x800/FF0000/FFFFFF?text=POLERA+02', desc: 'Tecnología: la prenda que carga eternamente. Siempre a medio descargar, como el deseo.' },
-  { id: 3, nombre: 'Alma en Beta', precio: '$42.000', img: 'https://via.placeholder.com/600x800/FFFFFF/000000?text=POLERA+03', desc: 'Metafísica: si el emoji no tiene cuerpo, ¿quién lleva la polera? Un fantasma con talla única.' },
-  { id: 4, nombre: 'Meme Funerario', precio: '$29.990', img: 'https://via.placeholder.com/600x800/222222/FF0000?text=POLERA+04', desc: 'Cultura de internet: lo viral muere en 48 horas; la tela lo recuerda 48 años.' }
+  { id: 2, nombre: 'collage automatico quimera', precio: '$49.990', img: 'poleras/prenda2.webp', desc: 'Registro de taller realizado. Demuestrales a todxs que fuiste parte del proceso comprando y llevandola encima!' },
+  { id: 3, nombre: '+', precio: '$420.000', img: 'poleras/prenda3.webp', desc: '+ la famosa banda "primeros auxilios" + Ahora en rojo.' },
+  { id: 4, nombre: 'glup!', precio: '$29.990', img: 'poleras/prenda4.webp', desc: 'Como mariposa, en espiral, infinito, 8, The.Butterfly.Effect.2004.1080p.BluRay.x264-CiNEFiLE.mkv ' }
 ];
 
 // RENDERIZAR PRODUCTOS
@@ -325,7 +325,7 @@ document.getElementById('grid').innerHTML = PRODUCTOS.map((p, i) => `
     <span class="badge">CYBER OFFER</span>
     <img class="im" src="${p.img}" alt="${p.nombre}" onclick="openFicha(${i})">
     <div class="in">
-      <span class="tag k">ESTADO: AGOTADO PERPETUO</span>
+      <span class="tag k">ESTADO: AGOTADO</span>
       <h3>${p.nombre}</h3>
       <div class="prices"><span class="old">${p.precio}</span><div class="new"><b>$0</b><span class="sv">[AHORRO 100%]</span></div></div>
       <button class="btn r" onclick="openCheckout('${p.nombre} × 1')">Comprar en Cyber</button>
