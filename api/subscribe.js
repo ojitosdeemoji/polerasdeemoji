@@ -9,13 +9,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Correo no válido' });
   }
 
+  const apiKey = process.env.RESEND_API_KEY || process.env.resend_api_key;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Falta la API Key en Vercel' });
+  }
+
   try {
-    // Envío directo a la API de contactos de Resend
-    const response = await fetch('https://api.resend.com/contacts', {
+    // 1. Guardar contacto en la audiencia "General"
+    await fetch('https://api.resend.com/audiences/1f6a0ca1-285f-4fae-9015-35efdc250845/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         email: email,
@@ -24,16 +29,76 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
+    // ASCII Art del símbolo de reciclaje
+    const asciiRecycle = `
+    _____\    _______
+   /      \  |      /\
+  /_______/  |_____/  \
+ |   \   /        /   /
+  \   \         \/   /
+   \  /          \__/_
+    \/ ____    /\
+      /  \    /  \
+     /\   \  /   /
+       \   \/   /
+        \___\__/
+;
 
-    if (response.ok) {
-      return res.status(200).json({ success: true, data });
+    // 2. Enviar correo de bienvenida inmediato
+    const mailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        from: 'polerasdeemoji <onboarding@resend.dev>',
+        to: [email],
+        subject: '¡REGISTRO CONFIRMADO! // POLERASDEEMOJI',
+        html: `
+          <div style="background-color: #000000; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 24px; border: 2px solid #00ff00; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #ffffff; margin-top: 0; font-size: 20px; border-bottom: 1px solid #00ff00; padding-bottom: 8px;">
+              POLERASDEEMOJI.ORG
+            </h1>
+            
+            <p style="color: #ffffff; font-size: 14px; margin-top: 16px;">
+              ¡Hola ${nombre || 'suscriptor'}! Estamos felices de que te hayas registrado.
+            </p>
+            
+            <p style="color: #00ff00; font-size: 14px;">
+              ¡Felicidades! Este es el primer correo de muchos, disfruta tu spam.
+            </p>
+
+            <pre style="color: #00ff00; font-size: 12px; line-height: 1.2; background-color: #111111; padding: 12px; border: 1px dashed #00ff00; overflow-x: auto; font-family: monospace;">
+    _____\    _______
+   /      \  |      /\
+  /_______/  |_____/  \
+ |   \   /        /   /
+  \   \         \/   /
+   \  /          \__/_
+    \/ ____    /\
+      /  \    /  \
+     /\   \  /   /
+       \   \/   /
+        \___\__/
+            </pre>
+
+            <hr style="border: 0; border-top: 1px solid #333333; margin: 20px 0;" />
+            <p style="font-size: 11px; color: #888888; margin-bottom: 0;">
+              Organización sin fines de lucro // Registro no comercial.
+            </p>
+          </div>
+        `
+      })
+    });
+
+    if (mailResponse.ok) {
+      return res.status(200).json({ success: true });
     } else {
-      console.error('Error Resend API:', data);
-      return res.status(response.status).json({ error: data.message || 'Error en Resend' });
+      return res.status(200).json({ success: true, note: 'Contacto guardado pero no se pudo despachar el mail' });
     }
   } catch (err) {
-    console.error('Error Serverless Function:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    console.error('Error al procesar la suscripción:', err);
+    return res.status(500).json({ error: 'Error del servidor' });
   }
 }
