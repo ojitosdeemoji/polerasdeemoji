@@ -9,13 +9,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Correo no válido' });
   }
 
+  const apiKey = process.env.RESEND_API_KEY || process.env.resend_api_key;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Falta la API Key en Vercel' });
+  }
+
   try {
-    // Envío directo a la API de contactos de Resend
-    const response = await fetch('https://api.resend.com/contacts', {
+    // Apunta exactamente a tu audiencia "General" usando tu ID
+    const response = await fetch('https://api.resend.com/audiences/1f6a0ca1-285f-4fae-9015-35efdc250845/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         email: email,
@@ -29,11 +34,9 @@ export default async function handler(req, res) {
     if (response.ok) {
       return res.status(200).json({ success: true, data });
     } else {
-      console.error('Error Resend API:', data);
       return res.status(response.status).json({ error: data.message || 'Error en Resend' });
     }
   } catch (err) {
-    console.error('Error Serverless Function:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    return res.status(500).json({ error: 'Error del servidor' });
   }
 }
