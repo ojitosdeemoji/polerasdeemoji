@@ -1,136 +1,33 @@
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
 
-  const { email, nombre } = req.body;
+  const { email, nombre } = req.body || {};
+  if (!email) return res.status(400).json({ error: 'Falta email' });
 
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Correo no válido' });
-  }
+  const apiKey = process.env.BREVO_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'Falta BREVO_API_KEY en Vercel' });
 
-  const apiKey = process.env.RESEND_API_KEY || process.env.resend_api_key;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Falta la API Key en Vercel' });
-  }
-
-  // 1. Guardar contacto en la audiencia
   try {
-    await fetch('https://api.resend.com/audiences/1f6a0ca1-285f-4fae-9015-35efdc250845/contacts', {
+    const r = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'api-key': apiKey
       },
       body: JSON.stringify({
         email: email,
-        first_name: nombre || 'Suscriptor',
-        unsubscribed: false
-      })
-    });
-  } catch (e) {
-    console.log('Contacto no guardado o ya existente');
-  }
-
-  // 2. Enviar correo de bienvenida inmediatamente
-  try {
-    const mailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        from: 'onboarding@resend.dev',
-        to: [email],
-        subject: '¡REGISTRO CONFIRMADO! // POLERASDEEMOJI',
-        html: `
-          <div style="background-color: #000000; color: #00ff00; font-family: 'Courier New', Courier, monospace; padding: 24px; border: 2px solid #00ff00; max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #ffffff; margin-top: 0; font-size: 20px; border-bottom: 1px solid #00ff00; padding-bottom: 8px;">
-              POLERASDEEMOJI.ORG
-            </h1>
-            
-            <p style="color: #ffffff; font-size: 14px; margin-top: 16px;">
-              ¡Hola ${nombre || 'suscriptor'}! Estamos felices de que te hayas registrado.
-            </p>
-            
-            <p style="color: #00ff00; font-size: 14px;">
-              ¡Felicidades! Este es el primer correo de muchos, disfruta tu spam.
-            </p>
-
-            <pre style="color: #00ff00; font-size: 12px; line-height: 1.2; background-color: #111111; padding: 12px; border: 1px dashed #00ff00; overflow-x: auto; font-family: monospace;">
-                                                                                                                 
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                 ██████████████████                         █████████████████████                      
-                  █████████████████               ███████████ █████████████████████                    
-                     ████████████████           ██████████████ █████████████████████                   
-                    ██████████████████         █████████████████ ████████████████████                  
-                   ███████████████████        ████████████████████████████████████████    ██           
-                  █████████████████████      █████████████████████ ████████████████████████            
-                 ████████████████████████   █████████████████████   ██████████████████████             
-                ██████████████████████████ █████████████████████     ████████████████████              
-               ████████████████████      ██████████████████████       ██████████████████               
-             ██████████████████████      █████████████████████         ████████████████                
-             ████████████████████           █████████████████          ███████████████                 
-           █████████████████████               █████████████        █████████████████                  
-          ██████████████████████                  ████████                                  ██         
-         █████████████████████                       ████                               ████████       
-        █████████████████████                                                        ████████████      
-       █████████████████████                                                      ████████████████     
-      █████████████████████                                                    ████████████████████    
-     █████████████████████                                                     █████████████████████   
-    █████████████████████                                                       █████████████████████  
-   █████████████████████                                                         █████████████████████ 
-  █████████████████████                                                           ████████████████████ 
- █████████████████████                                                             ███████████████████ 
- ████████████████████                                                               ██████████████████ 
-  ██████████████████                                                       ██        ████████████████  
-    ███████████████                                                        ██          ████████████    
-    ██████████████                                                       ████                    ██    
-      ██████████████████████████████████████████████████████████        ██████████████████████████     
-       █████████████████████████████████████████████████████████       ██████████████████████████      
-        ████████████████████████████████████████████████████████      ██████████████████████████       
-         ███████████████████████████████████████████████████████     ██████████████████████████        
-          ██████████████████████████████████████████████████████    ██████████████████████████         
-           █████████████████████████████████████████████████████    █████████████████████████          
-             ███████████████████████████████████████████████████     ███████████████████████           
-              ██████████████████████████████████████████████████       ████████████████████            
-                ████████████████████████████████████████████████        ██████████████████             
-                   █████████████████████████████████████████████         ███████████████               
-                                                                          ███                          
-                                                                           ██                          
-                                                                            █                          
-                                                                                                       
-                                                                                                       
-                                                                                                       
-                                                                                                       
-
-            </pre>
-
-            <hr style="border: 0; border-top: 1px solid #333333; margin: 20px 0;" />
-            <p style="font-size: 11px; color: #888888; margin-bottom: 0;">
-              Organización sin fines de lucro // Registro no comercial.
-            </p>
-          </div>
-        `
+        attributes: { NOMBRE: nombre || '' },
+        updateEnabled: true
       })
     });
 
-    const mailData = await mailResponse.json();
-
-    if (mailResponse.ok) {
-      return res.status(200).json({ success: true, mailData });
+    if (r.ok || r.status === 204) {
+      return res.status(200).json({ success: true, message: 'Suscrito con éxito' });
     } else {
-      console.error('Error al enviar e-mail:', mailData);
-      return res.status(200).json({ success: true, note: mailData.message });
+      const errData = await r.json();
+      return res.status(400).json({ error: errData.message || 'Error al suscribir' });
     }
   } catch (err) {
-    console.error('Error del servidor:', err);
-    return res.status(500).json({ error: 'Error del servidor' });
+    return res.status(500).json({ error: 'Error en el servidor' });
   }
 }
