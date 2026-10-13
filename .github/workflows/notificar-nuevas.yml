@@ -1,0 +1,44 @@
+name: Notificar nuevas prendas
+
+on:
+  push:
+    branches: [main]
+    paths: [index.html]
+  workflow_dispatch:
+    inputs:
+      titulo:
+        description: 'Nombre de la prenda'
+        required: true
+      descripcion:
+        description: 'Descripción'
+        required: false
+      precio:
+        description: 'Precio original (ej: $35.000)'
+        required: false
+      imagen:
+        description: 'Ruta de la imagen (ej: poleras/prenda10.webp)'
+        required: false
+
+jobs:
+  notificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Esperar deploy de Vercel
+        if: github.event_name == 'push'
+        run: sleep 75
+      - name: Enviar aviso
+        run: node scripts/notificar-nuevas.mjs
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          NOTIFY_SECRET: ${{ secrets.NOTIFY_SECRET }}
+          BEFORE_SHA: ${{ github.event.before }}
+          MANUAL_TITULO: ${{ github.event.inputs.titulo }}
+          MANUAL_DESC: ${{ github.event.inputs.descripcion }}
+          MANUAL_PRECIO: ${{ github.event.inputs.precio }}
+          MANUAL_IMG: ${{ github.event.inputs.imagen }}
