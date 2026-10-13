@@ -14,11 +14,10 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'api-key': apiKey
       },
-      body: JSON.stringify({
-        email: email,
-        attributes: { NOMBRE: nombre || '' },
-        updateEnabled: true
-      })
+     body: JSON.stringify({
+      email: email,
+      updateEnabled: true
+    })
     });
 
     if (r.ok || r.status === 204) {
