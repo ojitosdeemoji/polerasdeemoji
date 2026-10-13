@@ -42,7 +42,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         audience_id: audienceId, // Si Resend lo rechaza, cambia "audience_id" por "segment_id"
         name: `Lanzamiento: ${tituloPolera}`,
-        from: 'polerasdeemoji <alerta@polerasdeemoji.org>',
+        from: 'polerasdeemoji <onboarding@resend.dev>',
         subject: `NUEVO LANZAMIENTO INTANGIBLE: ${tituloPolera}`,
         html,
         send: true
