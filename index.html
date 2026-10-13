@@ -426,14 +426,16 @@ async function reg(e) {
       body: JSON.stringify({ email, nombre })
     });
     
+    const data = await res.json().catch(() => ({}));
+
     if (res.ok) {
       alert("Gracias por registrarte. Tu correo ha sido guardado exitosamente en la nube real.");
       document.getElementById('emInput').value = '';
     } else {
-      alert("Ocurrió un detalle al guardar tu correo. Intenta de nuevo.");
+      alert("Error (" + res.status + "): " + (data.error || "Ocurrió un detalle al guardar tu correo."));
     }
   } catch (err) {
-    alert("Enviado a la nube.");
+    alert("Error de conexión con el servidor: " + err.message);
   }
 }
 
