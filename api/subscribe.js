@@ -66,9 +66,9 @@ export default async function handler(req, res) {
          Cada vez que una nueva pieza intente cruzar de la pantalla a la materia, recibirás una notificacion!        
         </p>
 
-        <div style="text-align:center;margin:24px 0 16px 0;">
-          <a href="https://polerasdeemoji.vercel.app" style="display:inline-block;text-decoration:none;border:3px solid #ff0000;box-shadow:4px 4px 0px #ff0000;background:#000000;">
-            <img src="https://polerasdeemoji.vercel.app/re.webp" alt="IR A LA TIENDA" width="300" style="display:block;max-width:100%;height:auto;border:none;" />
+       <div style="text-align:center;margin:24px 0 16px 0;">
+          <a href="https://polerasdeemoji.vercel.app" style="display:inline-block;text-decoration:none;background:#2a2a2a;padding:16px;border:3px solid #ff0000;box-shadow:4px 4px 0px #ff0000;">
+            <img src="https://polerasdeemoji.vercel.app/re.webp" alt="IR" width="300" style="display:block;max-width:100%;height:auto;border:none;margin:0 auto;" />
           </a>
         </div>
 
