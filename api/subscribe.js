@@ -67,8 +67,8 @@ export default async function handler(req, res) {
         </p>
 
        <div style="text-align:center;margin:24px 0 16px 0;">
-          <a href="https://polerasdeemoji.vercel.app" style="display:inline-block;text-decoration:none;background:#2a2a2a;padding:16px;border:3px solid #ff0000;box-shadow:4px 4px 0px #ff0000;">
-            <img src="https://polerasdeemoji.vercel.app/re.webp" alt="IR" width="300" style="display:block;max-width:100%;height:auto;border:none;margin:0 auto;" />
+          <a href="https://polerasdeemoji.vercel.app" style="display:inline-block;text-decoration:none;background:#d4d4d4;padding:16px;border:3px solid #ff0000;box-shadow:4px 4px 0px #ff0000;">
+            <img src="https://polerasdeemoji.vercel.app/re.png" alt="IR" width="300" style="display:block;max-width:100%;height:auto;border:none;margin:0 auto;" />
           </a>
         </div>
 
