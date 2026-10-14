@@ -7,12 +7,12 @@ export default async function handler(req, res) {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Falta BREVO_API_KEY en Vercel' });
 
-  // CONFIGURACIÓN CLAVE:
-  const CORREO_REMITENTE = 'tu-correo-real-de-brevo@gmail.com'; // <<< CAMBIAR AQUÍ: Pon tu correo verificado en Brevo
-  const LISTA_ID = 2; // <<< CAMBIAR AQUÍ: Pon el número de ID de tu lista de Brevo (ej: 2)
+  // DATOS CONFIGURADOS
+  const CORREO_REMITENTE = 'hadaddiego9@gmail.com';
+  const LISTA_ID = 2;
 
   try {
-    // 1. Guardar contacto en Brevo y asignarlo a la lista de suscriptores
+    // 1. Guardar o actualizar contacto en Brevo y asignarlo a la lista #2
     const contactRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         email: email,
         updateEnabled: true,
-        listIds: [LISTA_ID] // Vincula el contacto a la lista
+        listIds: [LISTA_ID]
       })
     });
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       console.error('Error al guardar contacto en Brevo:', errData);
     }
 
-    // 2. Enviar correo de bienvenida inmediato al usuario
+    // 2. Enviar correo de bienvenida al instante
     const htmlBienvenida = `
       <div style="font-family:'Courier New',monospace;background:#000;color:#fff;padding:20px;text-align:center;max-width:600px;margin:0 auto;border:2px solid #ff0000;">
         <h1 style="color:#ff0000;text-transform:uppercase;margin-top:0;">polerasdeemoji</h1>
