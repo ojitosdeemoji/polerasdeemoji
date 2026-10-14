@@ -15,12 +15,12 @@ export default async function handler(req, res) {
   const { tituloPolera, descripcion, imagenUrl, precio } = req.body || {};
   if (!tituloPolera) return res.status(400).json({ error: 'Falta tituloPolera' });
 
-  // CONFIGURACIÓN CLAVE:
-  const CORREO_REMITENTE = 'tu-correo-real-de-brevo@gmail.com'; // <<< CAMBIAR AQUÍ: Pon tu correo verificado en Brevo
-  const LISTA_ID = 2; // <<< CAMBIAR AQUÍ: El mismo ID de lista del paso 1
+  // DATOS CONFIGURADOS
+  const CORREO_REMITENTE = 'hadaddiego9@gmail.com';
+  const LISTA_ID = 2;
 
   try {
-    // 1. Obtener los suscriptores de la lista en Brevo
+    // 1. Obtener la lista de correos suscritos desde Brevo
     const listReq = await fetch(`https://api.brevo.com/v3/contacts/lists/${LISTA_ID}/contacts?limit=500`, {
       method: 'GET',
       headers: {
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, message: 'No hay suscriptores en la lista para notificar.' });
     }
 
-    // 2. Construir el diseño del correo
+    // 2. Armar el diseño neo-brutalista del correo
     const htmlContent = `
       <div style="font-family:'Courier New',monospace;background:#000;color:#fff;padding:20px;text-align:center;max-width:600px;margin:0 auto;border:2px solid #ff0000;">
         <h1 style="color:#ff0000;text-transform:uppercase;margin-top:0;">polerasdeemoji</h1>
@@ -50,8 +50,7 @@ export default async function handler(req, res) {
         <a href="https://polerasdeemoji.vercel.app" style="background:#ff0000;color:#fff;padding:12px 20px;text-decoration:none;font-weight:bold;display:inline-block;">VER EN LA TIENDA</a>
       </div>`;
 
-    // 3. Enviar el correo a cada suscriptor de la lista
-    // (Usamos messageVersions para enviar correos individuales sin exponer las direcciones de otros usuarios)
+    // 3. Preparar destinatarios de forma individual (ocultos entre sí)
     const destinatarios = contactos.map(c => ({
       to: [{ email: c.email }]
     }));
