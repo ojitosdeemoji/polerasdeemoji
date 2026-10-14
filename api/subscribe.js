@@ -63,26 +63,12 @@ export default async function handler(req, res) {
         </div>
 
         <p style="font-size:12px;line-height:1.5;color:#cccccc;margin:0 0 20px 0;">
-         Cada vez que una nueva pieza intente cruzar de la pantalla a la materia, recibirás una notificacion!
-
-                                ____
-                               / _\ \
-                              / / _\ \_
-                             / /  \   /
-                             L/    \ /
-                         ____       ~   _
-                         \  _\         l \
-                         / /            \ \
-                        / /              \ \
-                        \/_____     /l____\/
-                         \_____>   <  ____/
-                                    \l
-
+         Cada vez que una nueva pieza intente cruzar de la pantalla a la materia, recibirás una notificacion!        
         </p>
 
         <div style="text-align:center;margin:24px 0 16px 0;">
-          <a href="https://polerasdeemoji.vercel.app" style="background:#ff0000;color:#000000;padding:14px 22px;text-decoration:none;font-weight:900;font-size:13px;display:inline-block;letter-spacing:1.5px;text-transform:uppercase;border:2px solid #ffffff;">
-            $$$$
+          <a href="https://polerasdeemoji.vercel.app" style="display:inline-block;text-decoration:none;border:3px solid #ff0000;box-shadow:4px 4px 0px #ff0000;background:#000000;">
+            <img src="https://polerasdeemoji.vercel.app/re.webp" alt="IR A LA TIENDA" width="300" style="display:block;max-width:100%;height:auto;border:none;" />
           </a>
         </div>
 
